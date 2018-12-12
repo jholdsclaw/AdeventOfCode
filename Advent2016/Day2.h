@@ -14,22 +14,23 @@ namespace Day2
 		KeypadNumber *left;
 		KeypadNumber *right;
 
-		unsigned short int key;
+		int key;
 	};
 
 	class Keypad {
 	public:
-		void processInput(std::string const &input);
+		int processInput(std::string const &input);
 
 		Keypad() noexcept;
 
 	private:
 		KeypadNumber keys[3][3];
+		KeypadNumber *currentKeypadNumber;
 
 		void buildKeypad();
 	};
 
-	void parseInput(std::string const &input, Keypad *kpd);
+	std::string parseInput(std::string const &input, Keypad *kpd);
 
 	void run();
 }

@@ -7,6 +7,8 @@
 namespace Day1 {
 	void run() {
 
+		std::cout << "Day 1:\n" << std::endl;
+
 		Day1::Avatar myAvatarTest1;
 
 		//Test Case 1 = Result should be 5
