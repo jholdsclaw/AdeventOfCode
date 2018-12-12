@@ -14,20 +14,37 @@ namespace Day2
 		KeypadNumber *left;
 		KeypadNumber *right;
 
-		int key;
+		char key;
 	};
 
 	class Keypad {
 	public:
-		int processInput(std::string const &input);
+		char processInput(std::string const &input);
 
-		Keypad() noexcept;
-
-	private:
-		KeypadNumber keys[3][3];
+	protected:
+		KeypadNumber *keys;
 		KeypadNumber *currentKeypadNumber;
 
+	};
+
+	class Keypad1 : public Keypad {
+	private:
 		void buildKeypad();
+	
+	public:
+		Keypad1() noexcept;
+		~Keypad1() noexcept;
+
+	};
+
+	class Keypad2 : public Keypad {
+	private:
+		void buildKeypad();
+
+	public:
+		Keypad2() noexcept;
+		~Keypad2() noexcept;
+
 	};
 
 	std::string parseInput(std::string const &input, Keypad *kpd);
