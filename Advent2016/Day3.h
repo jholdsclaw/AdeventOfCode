@@ -8,7 +8,13 @@
 
 namespace Day3
 {
-	void parseInput(std::ifstream &input);
+	namespace Part1 {
+		void parseInput(std::ifstream &input);
+	}
+	namespace Part2 {
+		void parseInput(std::ifstream &input);
+	}
+
 	void run();
 
 	bool validTriangle(std::vector<int> const triangle);

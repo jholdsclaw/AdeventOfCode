@@ -28,30 +28,19 @@ namespace Day3 {
 		assert(result == true);
 
 		// Part 1 - results unknown
-		std::ifstream input("./Day3.txt");
-		parseInput(input);
+		std::ifstream input1("./Day3.txt");
+		numPossibleTriangles = 0;
+		Part1::parseInput(input1);
 		std::cout << "Part 1: " << std::endl;
 		std::cout << "Result: " << numPossibleTriangles;
 
-	}
+		// Part 2 - results unknown
+		std::ifstream input2("./Day3.txt");
+		numPossibleTriangles = 0;
+		Part2::parseInput(input2);
+		std::cout << "Part 2: " << std::endl;
+		std::cout << "Result: " << numPossibleTriangles;
 
-	void parseInput(std::ifstream &input) {
-		std::stringstream ss;
-		std::string line;
-
-		std::vector<int> triangle = { 0,0,0 };
-
-		while (std::getline(input, line)) {
-			ss.str(line);
-
-			for (int i = 0; i < 3; i++)
-			{
-				ss >> triangle[i];
-			}
-
-			if (validTriangle(triangle)) numPossibleTriangles++;
-			ss.clear();
-		}
 	}
 
 	bool validTriangle(std::vector<int> triangle) {
@@ -63,4 +52,52 @@ namespace Day3 {
 		return ((sortedTriangle[0] + sortedTriangle[1]) > sortedTriangle[2]);
 	}
 
+	namespace Part1 {
+		void parseInput(std::ifstream &input) {
+			std::stringstream ss;
+			std::string line;
+
+			std::vector<int> triangle = { 0,0,0 };
+
+			while (std::getline(input, line)) {
+				ss.str(line);
+
+				for (int i = 0; i < 3; i++)
+				{
+					ss >> triangle[i];
+				}
+
+				if (validTriangle(triangle)) numPossibleTriangles++;
+				ss.clear();
+			}
+		}
+
+	}
+
+	namespace Part2 {
+		void parseInput(std::ifstream &input) {
+			std::stringstream ss;
+			std::string line;
+
+			std::vector<int> triangle[3] = { {0,0,0},{0,0,0},{0,0,0} };
+
+			while (input.good()) {
+				// Loop through 3 lines at a time to build 3 triangles
+				for (int i = 0; i < 3; i++) {
+					std::getline(input, line);
+					ss.str(line);
+					ss >> (triangle[0])[i];
+					ss >> (triangle[1])[i];
+					ss >> (triangle[2])[i];
+					ss.clear();
+				}
+				
+				// Now check each triangle 
+				for (int i = 0; i < 3; i++) {
+					if (validTriangle(triangle[i])) numPossibleTriangles++;
+				}
+			}
+		}
+
+	}
 }
