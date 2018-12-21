@@ -37,10 +37,9 @@ namespace Day4 {
 
 		// Part 1
 		std::ifstream input1("./Day4.txt");
-		unsigned int sum1;
-		sum1 = Part1::parseInput(input1);
+		unsigned int sum1 = Part1::parseInput(input1);
 		std::cout << "Part 1 - result = ???" << std::endl;
-		std::cout << "Result: " << sum1 << std::endl;
+		std::cout << "Result: " << sum1 << "\n" << std::endl;
 
 		// Test Case 5
 		std::string Test5 = "qzmt-zixmtkozy-ivhz-343[zimth]";
@@ -48,6 +47,11 @@ namespace Day4 {
 		std::string result1 = decryptRoomName(&room);
 		std::cout << "Test Case 5 = " << Test5 << " - result = \"very encrypted name\"" << std::endl;
 		std::cout << "Result: " << result1 << " (" << ((result1 == "very encrypted name") ? "Pass" : "Fail") << ")\n" << std::endl;
+
+		// Part 2
+		std::ifstream input2("./Day4.txt");
+		std::cout << "Part 2 - results = ???" << std::endl;
+		Part2::parseInput(input2);
 
 	}
 	EncryptedRoom deserializeRoom(const std::string *input) {
@@ -119,12 +123,16 @@ namespace Day4 {
 			}
 			// otherwise we computer shift cypher
 			else {
-				// Going to abuse C's implicit conversions between char and int
-				char shifted_c = (char)(c + shift);
+				// Abuse of C's implicit conversions between char and int...probably not a good idea, lol
+				// Since char's are signed, going to force the result into an unsigned int to prevent 
+				// it from wrapping around to a negative value
+				unsigned int shifted_c = (unsigned int)(c + shift);
 
 				// if we ended up past z, wrap it back to the beginning
 				if (shifted_c > 'z') shifted_c -= 26;
-				result << shifted_c;
+
+				// And now push the char value into the result
+				result << (char)shifted_c;
 			}
 		}
 
@@ -136,13 +144,11 @@ namespace Day4 {
 			// Variable to keep track of sum of sector ID's for valid rooms
 			unsigned int sum = 0;
 
-
 			EncryptedRoom room;
 			while (input.good()) {
 				// per spec, each line is one room
 				std::string line;
 
-				// get first line
 				std::getline(input, line);
 				room = deserializeRoom(&line);
 				if (validRoom(&room)) sum += room.SectorID;
@@ -152,4 +158,29 @@ namespace Day4 {
 		}
 	}
 
+	namespace Part2 {
+		void parseInput(std::ifstream &input) {
+			EncryptedRoom room;
+			std::string decryptedName;
+
+			while (input.good()) {
+				// per spec, each line is one room
+				std::string line;
+
+				std::getline(input, line);
+				room = deserializeRoom(&line);
+
+				// Get the decrypted name if it's a valid room
+				if (validRoom(&room)) decryptedName = decryptRoomName(&room);
+
+				// Per spec: "What is the sector ID of the room where North Pole objects are stored?"
+				// No idea what exact name might be, so let's just try to find any names with north in them
+				if (decryptedName.find("north") != std::string::npos) {
+					std::cout << "Potential match found: " << std::endl;
+					std::cout << "-Decrypted Name: " << decryptedName << std::endl;
+					std::cout << "-Sector ID: " << room.SectorID << "\n" << std::endl;
+				}
+			}
+		}
+	}
 }

@@ -13,7 +13,7 @@ namespace Day4
 		unsigned int parseInput(std::ifstream &input);
 	}
 	namespace Part2 {
-		unsigned int parseInput(std::ifstream &input);
+		void parseInput(std::ifstream &input);
 	}
 
 	struct EncryptedRoom {
