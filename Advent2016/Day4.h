@@ -25,7 +25,7 @@ namespace Day4
 	void run();
 
 	EncryptedRoom deserializeRoom(std::string const *input);
-	bool validRoom(EncryptedRoom *room);
-
+	bool validRoom(const EncryptedRoom *room);
+	std::string decryptRoomName(const EncryptedRoom *room);
 }
 #endif //ADVENT2016_DAY4_H

@@ -42,6 +42,12 @@ namespace Day4 {
 		std::cout << "Part 1 - result = ???" << std::endl;
 		std::cout << "Result: " << sum1 << std::endl;
 
+		// Test Case 5
+		std::string Test5 = "qzmt-zixmtkozy-ivhz-343[zimth]";
+		EncryptedRoom room = deserializeRoom(&Test5);
+		std::string result1 = decryptRoomName(&room);
+		std::cout << "Test Case 5 = " << Test5 << " - result = \"very encrypted name\"" << std::endl;
+		std::cout << "Result: " << result1 << " (" << ((result1 == "very encrypted name") ? "Pass" : "Fail") << ")\n" << std::endl;
 
 	}
 	EncryptedRoom deserializeRoom(const std::string *input) {
@@ -55,8 +61,8 @@ namespace Day4 {
 		const unsigned int TAIL_LEN = SECTOR_ID_LEN + CHECKSUM_LEN + 2;
 		const unsigned int ENC_ROOM_LEN = input->length() - TAIL_LEN;
 
-		// Grab the encrypted name
-		room.Name = input->substr(0, ENC_ROOM_LEN);
+		// Grab the encrypted name (leave off last hyphen char)
+		room.Name = input->substr(0, (ENC_ROOM_LEN - 1));
 
 		// Grab the sector id 
 		room.SectorID = std::stoi(input->substr(ENC_ROOM_LEN, CHECKSUM_LEN));
@@ -67,7 +73,7 @@ namespace Day4 {
 		return room;
 	}
 
-	bool validRoom(EncryptedRoom *room) {
+	bool validRoom(const EncryptedRoom *room) {
 		// We'll use an ordered map as a quick shortcut so when we sort later on 
 		// occurance counts, ties will automatically be sorted alphabetically
 		std::map<char, unsigned int> letters;
@@ -96,6 +102,33 @@ namespace Day4 {
 		}
 
 		return (checksum.str() == room->Checksum);
+	}
+
+	std::string decryptRoomName(const EncryptedRoom *room) {
+		// String stream to build the decoded name
+		std::stringstream result;
+
+		// Since we loop around every 26 times, we only need to shift by the remainder
+		unsigned int shift = (room->SectorID % 26);
+
+		// Loop through each character to shift
+		for (auto c : room->Name) {
+			// Per spec, convert dashes to spaces
+			if (c == '-') {
+				result << ' ';
+			}
+			// otherwise we computer shift cypher
+			else {
+				// Going to abuse C's implicit conversions between char and int
+				char shifted_c = (char)(c + shift);
+
+				// if we ended up past z, wrap it back to the beginning
+				if (shifted_c > 'z') shifted_c -= 26;
+				result << shifted_c;
+			}
+		}
+
+		return result.str();
 	}
 
 	namespace Part1 {
