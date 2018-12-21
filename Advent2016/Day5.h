@@ -8,7 +8,13 @@
 
 namespace Day5
 {
-	std::string getPassword(const std::string input);
+	namespace Part1 {
+		std::string getPassword(const std::string input);
+	}
+
+	namespace Part2 {
+		std::string getPassword(const std::string input);
+	}
 
 	void run();
 }
