@@ -10,10 +10,10 @@
 namespace Day4
 {
 	namespace Part1 {
-		void parseInput(std::ifstream &input);
+		unsigned int parseInput(std::ifstream &input);
 	}
 	namespace Part2 {
-		void parseInput(std::ifstream &input);
+		unsigned int parseInput(std::ifstream &input);
 	}
 
 	struct EncryptedRoom {
@@ -24,7 +24,8 @@ namespace Day4
 
 	void run();
 
-	bool validRoom(std::string const * input);
+	EncryptedRoom deserializeRoom(std::string const *input);
+	bool validRoom(EncryptedRoom *room);
 
 }
 #endif //ADVENT2016_DAY4_H

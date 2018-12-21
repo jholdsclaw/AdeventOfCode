@@ -1,6 +1,7 @@
 #include <iostream>
 #include <string>
 #include <sstream>
+#include <fstream>
 #include <map>
 #include <unordered_map>
 
@@ -12,31 +13,38 @@ namespace Day4 {
 
 		// Test Case 1
 		std::string Test1 = "aaaaa-bbb-z-y-x-123[abxyz]";
-		bool result = validRoom(&Test1);
+		bool result = validRoom(&deserializeRoom(&Test1));
 		std::cout << "Test Case 1 " << Test1 << " - result = true" << std::endl;
 		std::cout << "Result: " << result << " (" << ((result == true) ? "Pass" : "Fail") << ")\n" << std::endl;
 
 		// Test Case 2
 		std::string Test2 = "a-b-c-d-e-f-g-h-987[abcde]";
-		result = validRoom(&Test2);
+		result = validRoom(&deserializeRoom(&Test2));;
 		std::cout << "Test Case 2 - " << Test2 << " - result = true" << std::endl;
 		std::cout << "Result: " << result << " (" << ((result == true) ? "Pass" : "Fail") << ")\n" << std::endl;
 
 		// Test Case 3
 		std::string Test3 = "not-a-real-room-404[oarel]";
-		result = validRoom(&Test3);
+		result = validRoom(&deserializeRoom(&Test3));
 		std::cout << "Test Case 3 - " << Test3 << " - result = true" << std::endl;
 		std::cout << "Result: " << result << " (" << ((result == true) ? "Pass" : "Fail") << ")\n" << std::endl;
 
 		// Test Case 4
 		std::string Test4 = "totally-real-room-200[decoy]";
-		result = validRoom(&Test4);
+		result = validRoom(&deserializeRoom(&Test4));
 		std::cout << "Test Case 4 - " << Test4 << " - result = false" << std::endl;
 		std::cout << "Result: " << result << " (" << ((result == false) ? "Pass" : "Fail") << ")\n" << std::endl;
 
-	}
+		// Part 1
+		std::ifstream input1("./Day4.txt");
+		unsigned int sum1;
+		sum1 = Part1::parseInput(input1);
+		std::cout << "Part 1 - result = ???" << std::endl;
+		std::cout << "Result: " << sum1 << std::endl;
 
-	bool validRoom(std::string const *input) {
+
+	}
+	EncryptedRoom deserializeRoom(const std::string *input) {
 		EncryptedRoom room;
 
 		// Assumptions: the sector id is always 3 digits,
@@ -56,15 +64,19 @@ namespace Day4 {
 		// And finally grab the checksum
 		room.Checksum = input->substr((input->length() - (CHECKSUM_LEN + 1)), CHECKSUM_LEN);
 
+		return room;
+	}
+
+	bool validRoom(EncryptedRoom *room) {
 		// We'll use an ordered map as a quick shortcut so when we sort later on 
 		// occurance counts, ties will automatically be sorted alphabetically
 		std::map<char, unsigned int> letters;
 
 		// Build our hash map to keep count of occurances of letters
-		for (int i = 0; i < room.Name.length(); i++) {
+		for (int i = 0; i < room->Name.length(); i++) {
 			// ignore the dashes
-			if (room.Name[i] != '-')
-				(letters.count((room.Name[i])) == 0) ? letters[(room.Name[i])] = 1 : letters[(room.Name[i])]++;
+			if (room->Name[i] != '-')
+				(letters.count((room->Name[i])) == 0) ? letters[(room->Name[i])] = 1 : letters[(room->Name[i])]++;
 		}
 
 		// Now we'll create a descending ordered map using the count as the key
@@ -78,12 +90,33 @@ namespace Day4 {
 		std::stringstream checksum;
 		for (const auto& l : ordered_letters) {
 			checksum << l.second;
-			
+
 			// only want the first 5
 			if (checksum.str().length() >= 5) break;
 		}
 
-		return (checksum.str() == room.Checksum);
+		return (checksum.str() == room->Checksum);
+	}
+
+	namespace Part1 {
+		unsigned int parseInput(std::ifstream &input) {
+			// Variable to keep track of sum of sector ID's for valid rooms
+			unsigned int sum = 0;
+
+
+			EncryptedRoom room;
+			while (input.good()) {
+				// per spec, each line is one room
+				std::string line;
+
+				// get first line
+				std::getline(input, line);
+				room = deserializeRoom(&line);
+				if (validRoom(&room)) sum += room.SectorID;
+			}
+
+			return sum;
+		}
 	}
 
 }

@@ -4,8 +4,8 @@
 #include "Day4.h"
 
 int main() {
-    // Day1 puzzle
-    //Day1::run();
+	// Day1 puzzle
+	//Day1::run();
 
 	// Day2 puzzle
 	//Day2::run();
