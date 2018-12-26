@@ -19,8 +19,15 @@ namespace Day6
 	template<std::size_t SIZE>
 	void parseInput(std::ifstream &input, std::array<charmap, SIZE> *result);
 
-	template<std::size_t SIZE>
-	std::string decode(const std::array<charmap, SIZE> *charmap);
+	namespace Part1 {
+		template<std::size_t SIZE>
+		std::string decode(const std::array<charmap, SIZE> *charmaps);
+	}
+
+	namespace Part2 {
+		template<std::size_t SIZE>
+		std::string decode(const std::array<charmap, SIZE> *charmaps);
+	}
 
 	void run();
 }

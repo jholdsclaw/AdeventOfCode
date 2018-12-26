@@ -14,7 +14,7 @@ namespace Day6 {
 		std::array<charmap, 6> test_charmap;
 		parseInput(&test_input, &test_charmap);
 		
-		std::string result1 = decode(&test_charmap);
+		std::string result1 = Part1::decode(&test_charmap);
 
 		std::cout << "Test Case 1:\n" << test_input << "\n\nresult = easter" << std::endl;
 		std::cout << "Result: " << result1 << " (" << ((result1 == "easter") ? "Pass" : "Fail") << ")\n" << std::endl;
@@ -25,7 +25,11 @@ namespace Day6 {
 
 		parseInput(part1, &charmap1);
 		std::cout << "Part 1 - result = ???" << std::endl;
-		std::cout << "Result: " << decode(&charmap1) << "\n" << std::endl;
+		std::cout << "Result: " << Part1::decode(&charmap1) << "\n" << std::endl;
+
+		// Part 1
+		std::cout << "Part 2 - result = ???" << std::endl;
+		std::cout << "Result: " << Part2::decode(&charmap1) << "\n" << std::endl;
 
 		return;
 	}
@@ -59,25 +63,50 @@ namespace Day6 {
 		}
 	}
 
-	template<std::size_t SIZE>
-	std::string decode(const std::array<charmap, SIZE> *charmap) {
-		std::stringstream ss;
-		
-		for (int i = 0; i < charmap->size(); i++) {
-			char c;
-			int biggest = 0; 
+	namespace Part1 {
+		template<std::size_t SIZE>
+		std::string decode(const std::array<charmap, SIZE> *charmaps) {
+			std::stringstream ss;
 
-			for (auto const& item : charmap->at(i)) {
-				// Spec doesn't exactly say how to handle ties, so just going to keep the first highest found
-				if (item.second > biggest) { 
-					c = item.first;
-					biggest = item.second;
+			for (int i = 0; i < charmaps->size(); i++) {
+				char c;
+				int biggest = 0;
+
+				for (auto const& item : charmaps->at(i)) {
+					// Spec doesn't exactly say how to handle ties, so just going to keep the first highest found
+					if (item.second > biggest) {
+						c = item.first;
+						biggest = item.second;
+					}
 				}
+
+				ss << c;
 			}
 
-			ss << c;
+			return ss.str();
 		}
+	}
 
-		return ss.str();
+	namespace Part2 {
+		template<std::size_t SIZE>
+		std::string decode(const std::array<charmap, SIZE> *charmaps) {
+			std::stringstream ss;
+
+			for (int i = 0; i < charmaps->size(); i++) {
+				char c;
+				int smallest = -1;// we'll use -1 as our indicator we haven't actually set it yet;
+
+				for (auto const& item : charmaps->at(i)) {
+					if (smallest == -1 || item.second < smallest) {
+						c = item.first;
+						smallest = item.second;
+					}
+				}
+
+				ss << c;
+			}
+
+			return ss.str();
+		}
 	}
 }
