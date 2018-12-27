@@ -7,7 +7,9 @@
 
 namespace Day7
 {
-	bool hasAbba(const std::string *input);
+	bool supportTLS(const std::string *input);
+	bool isAbba(const std::string input);
+
 	void run();
 }
 #endif //ADVENT2016_DAY7_H
