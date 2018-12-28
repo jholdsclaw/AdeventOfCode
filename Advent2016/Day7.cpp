@@ -48,7 +48,7 @@ namespace Day7 {
 
 		// Part 1 
 		std::ifstream part1("./Day7.txt");
-		unsigned int count = parseInput(part1);
+		unsigned int count = Part1::parseInput(part1);
 		std::cout << "Part 1 - result = ???" << std::endl;
 		std::cout << "Result: " << count << "\n" << std::endl;
 
@@ -94,21 +94,45 @@ namespace Day7 {
 		std::cout << "Test Case 13:\n" << test13 << " - result = TRUE" << std::endl;
 		std::cout << "Result: " << result13 << " (" << ((result13 == true) ? "Pass" : "Fail") << ")\n" << std::endl;
 
+		// Part 2 
+		std::ifstream part2("./Day7.txt");
+		unsigned int count2 = Part2::parseInput(part2);
+		std::cout << "Part 2 - result = ???" << std::endl;
+		std::cout << "Result: " << count2 << "\n" << std::endl;
+
 		return;
 	}
 
-	int parseInput(std::ifstream &input) {
-		std::string line;
-		unsigned int count = 0;
+	namespace Part1 {
+		int parseInput(std::ifstream &input) {
+			std::string line;
+			unsigned int count = 0;
 
-		while (input.good()) {
-			std::getline(input, line);
+			while (input.good()) {
+				std::getline(input, line);
 
-			if (supportTLS(&line))
-				count++;
+				if (supportTLS(&line))
+					count++;
+			}
+
+			return count;
 		}
+	}
 
-		return count;
+	namespace Part2 {
+		int parseInput(std::ifstream &input) {
+			std::string line;
+			unsigned int count = 0;
+
+			while (input.good()) {
+				std::getline(input, line);
+
+				if (supportSSL(&line))
+					count++;
+			}
+
+			return count;
+		}
 	}
 
 	bool supportTLS(const std::string *input) {

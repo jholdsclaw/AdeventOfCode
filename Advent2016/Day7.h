@@ -16,7 +16,12 @@ namespace Day7
 	bool isAba(const std::string input);
 	bool isBab(const std::string input, const std::string aba);
 
-	int parseInput(std::ifstream &input);
+	namespace Part1 {
+		int parseInput(std::ifstream &input);
+	}
+	namespace Part2 {
+		int parseInput(std::ifstream &input);
+	}
 
 	void run();
 }
