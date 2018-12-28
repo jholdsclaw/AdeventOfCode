@@ -45,16 +45,29 @@ namespace Day7 {
 		std::cout << "Test Case 5:\n" << test6 << " - result = FALSE" << std::endl;
 		std::cout << "Result: " << result6 << " (" << ((result6 == false) ? "Pass" : "Fail") << ")\n" << std::endl;
 
-		//// Part 1 
-		//std::ifstream part1("./Day6.txt");
-		//std::array<charmap, 8> charmap1;
-		//parseInput(part1, &charmap1);
-		//std::cout << "Part 1 - result = ???" << std::endl;
-		//std::cout << "Result: " << Part1::decode(&charmap1) << "\n" << std::endl;
+		// Part 1 
+		std::ifstream part1("./Day7.txt");
+		unsigned int count = parseInput(part1);
+		std::cout << "Part 1 - result = ???" << std::endl;
+		std::cout << "Result: " << count << "\n" << std::endl;
 
 		return;
 	}
 
+	int parseInput(std::ifstream &input) {
+		std::string line;
+		unsigned int count = 0;
+
+		while (input.good()) {
+			std::getline(input, line);
+
+			if (supportTLS(&line))
+				count++;
+		}
+
+		return count;
+	}
+	
 	bool supportTLS(const std::string *input) {
 		bool result = false;
 		
@@ -67,16 +80,11 @@ namespace Day7 {
 			switch (c) {
 			case '[':
 				// Beginning of a hypernet, reset our sequence
-				sequence.str(std::string());
 				hypernet = true;
+				sequence.str(std::string());
 				break;
 			case ']':
 				hypernet = false;
-				// If the hypernet sequence is an ABBA, we know the sequence isn't valid
-				if (isAbba(sequence.str()))
-					return false;
-
-				// end of hypernet, go ahead and clear sequence
 				sequence.str(std::string());
 				break;
 			default:
@@ -84,12 +92,14 @@ namespace Day7 {
 				break;
 			}
 
-			if (sequence.str().size() >= 4 && !hypernet) {
-				result = (result || isAbba(sequence.str().substr(sequence.str().size() - 4, 4)));
+			if (sequence.str().size() >= 4) {
+				if (isAbba(sequence.str().substr(sequence.str().size() - 4, 4))) {
+					if (hypernet)
+						return false;
+					result = true;
+				}
 			}
-
 		}
-
 		return result;
 	}
 
