@@ -5,6 +5,7 @@
 #include "Day5.h"
 #include "Day6.h"
 #include "Day7.h"
+#include "Day8.h"
 
 int main() {
 	// Day1 puzzle
@@ -26,7 +27,10 @@ int main() {
 	//Day6::run();
 
 	// Day7 puzzle
-	Day7::run();
+	//Day7::run();
+
+	// Day8 puzzle
+	Day8::run();
 
 	return 0;
 }
