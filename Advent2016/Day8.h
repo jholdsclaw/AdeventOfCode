@@ -11,19 +11,27 @@ namespace Day8
 {
 	// Enum and conversion map for each switch on operations
 	enum Operations {
-		rect, 
-		rotate
+		RECT, 
+		ROTATE
 	};
-	const std::map<std::string, Operations> OperationMap = { {"rect", Operations::rect}, {"rotate", Operations::rotate} };
-	
 
+	const std::map<std::string, Operations> OperationMap = { {"rect", Operations::RECT}, {"rotate", Operations::ROTATE} };
+	
 	// Helper function to draw a rect on screen of variable size
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
-	void DrawRect(std::string const *params, bool (&screen)[SIZE_Y][SIZE_X]);
+	void drawRect(std::string const *params, bool (&screen)[SIZE_Y][SIZE_X]);
 
 	// Helper function to rotate
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
-	void Rotate(std::string const *params, bool(&screen)[SIZE_Y][SIZE_X]);
+	void rotate(std::string const *params, bool(&screen)[SIZE_Y][SIZE_X]);
+
+	// Helper function to shift X axis
+	template<std::size_t SIZE_Y, std::size_t SIZE_X>
+	void shiftX(int index, int offset, bool(&screen)[SIZE_Y][SIZE_X]);
+
+	// Helper function to shift Y axes
+	template<std::size_t SIZE_Y, std::size_t SIZE_X>
+	void shiftY(int index, int offset, bool(&screen)[SIZE_Y][SIZE_X]);
 
 	// Allow our parser to accept screens of variable size via templating
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
