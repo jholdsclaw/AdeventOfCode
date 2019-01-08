@@ -36,6 +36,10 @@ namespace Day8 {
 		parseInput(&test4, testscreen);
 		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
 
+		// Test Case 5
+		std::cout << "Test Case 5: number of lit pixels should eq 6" << std::endl;
+		std::cout << "Result:\n" << numPixelsLit(testscreen) << std::endl;
+
 		return;
 	}
 
@@ -150,5 +154,18 @@ namespace Day8 {
 			buf << std::endl;
 		}
 		return buf.str();
+	}
+
+	template<std::size_t SIZE_Y, std::size_t SIZE_X>
+	int numPixelsLit(const bool(&input)[SIZE_Y][SIZE_X]) {
+		int count = 0;
+
+		for (int y = 0; y < SIZE_Y; y++) {
+			for (int x = 0; x < SIZE_X; x++) {
+				if (input[y][x])
+					count++;
+			}
+		}
+		return count;
 	}
 }

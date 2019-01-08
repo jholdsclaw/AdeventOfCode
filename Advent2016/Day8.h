@@ -41,6 +41,10 @@ namespace Day8
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
 	std::string printScreen(bool const (&input)[SIZE_Y][SIZE_X]);
 
+	// Get number of pixels that are lit (true)
+	template<std::size_t SIZE_Y, std::size_t SIZE_X>
+	int numPixelsLit(bool const (&input)[SIZE_Y][SIZE_X]);
+
 	void run();
 }
 #endif //ADVENT2016_DAY8_H
