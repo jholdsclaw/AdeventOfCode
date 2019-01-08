@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include <sstream>
+#include <fstream>
 #include <string>
 #include <cmath> // for atoi
 
@@ -15,36 +16,43 @@ namespace Day8 {
 		// Test Case 1
 		std::string test1 = "rect 3x2";
 		std::cout << "Test Case 1: " << test1 << std::endl;
-		parseInput(&test1, testscreen);
+		readInstruction(&test1, testscreen);
 		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
 
 		// Test Case 2
 		std::string test2 = "rotate column x=1 by 1";
 		std::cout << "Test Case 2: " << test2 << std::endl;
-		parseInput(&test2, testscreen);
+		readInstruction(&test2, testscreen);
 		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
 
 		// Test Case 3
 		std::string test3 = "rotate row y=0 by 4";
 		std::cout << "Test Case 3: " << test3 << std::endl;
-		parseInput(&test3, testscreen);
+		readInstruction(&test3, testscreen);
 		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
 
 		// Test Case 4
 		std::string test4 = "rotate column x=1 by 1";
 		std::cout << "Test Case 4: " << test4 << std::endl;
-		parseInput(&test4, testscreen);
+		readInstruction(&test4, testscreen);
 		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
 
 		// Test Case 5
 		std::cout << "Test Case 5: number of lit pixels should eq 6" << std::endl;
-		std::cout << "Result:\n" << numPixelsLit(testscreen) << std::endl;
+		std::cout << "Result:\n" << numPixelsLit(testscreen) << "\n" << std::endl;
 
+		// Part 1 
+		std::ifstream part1("./Day8.txt");
+		bool screen1[6][50] = { 0 };
+		parseInput(part1, screen1);
+		std::cout << "Part 1 - Number of lit pixels - result = ???" << std::endl;
+		std::cout << "Result: " << numPixelsLit(screen1) << "\n" << std::endl;
+		std::cout << printScreen(screen1);
 		return;
 	}
 
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
-	void parseInput(std::string const *input, bool(&screen)[SIZE_Y][SIZE_X]) {
+	void readInstruction(std::string const *input, bool(&screen)[SIZE_Y][SIZE_X]) {
 		Operations instruction = OperationMap.at(input->substr(0, input->find(" ")));
 		std::string params = input->substr(input->find(" ") + 1);
 
@@ -58,6 +66,16 @@ namespace Day8 {
 		default:
 			std::cerr << "Error: unknown instruction!" << std::endl;
 		}
+	}
+
+	template<std::size_t SIZE_Y, std::size_t SIZE_X>
+	void parseInput(std::ifstream &input, bool(&screen)[SIZE_Y][SIZE_X]) {
+		std::string line;
+
+		while (input.good()) {
+			std::getline(input, line);
+			readInstruction(&line, screen);
+		} 
 	}
 
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
@@ -100,7 +118,7 @@ namespace Day8 {
 		int index_pos = params->find("=") + 1;
 		int offset_pos = params->find("by ") + 3;
 		index = atoi(params->substr(index_pos, params->find("by") - index_pos).c_str());
-		offset = atoi(params->substr(offset_pos, 1).c_str());
+		offset = atoi(params->substr(offset_pos).c_str());
 
 		switch (axis) {
 		case 'x':
@@ -149,7 +167,7 @@ namespace Day8 {
 
 		for (int y = 0; y < SIZE_Y; y++) {
 			for (int x = 0; x < SIZE_X; x++) {
-				buf << input[y][x] << ' ';
+				buf << ((input[y][x]) ? '*' : '.') << ' ';
 			}
 			buf << std::endl;
 		}

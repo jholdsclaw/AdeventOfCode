@@ -35,7 +35,11 @@ namespace Day8
 
 	// Allow our parser to accept screens of variable size via templating
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
-	void parseInput(std::string const *input, bool (&screen)[SIZE_Y][SIZE_X]);
+	void readInstruction(std::string const *input, bool (&screen)[SIZE_Y][SIZE_X]);
+
+	// Read several instructions from a file
+	template<std::size_t SIZE_Y, std::size_t SIZE_X>
+	void parseInput(std::ifstream &input, bool(&screen)[SIZE_Y][SIZE_X]);
 
 	// And use templates so we can also print variable sized screens
 	template<std::size_t SIZE_Y, std::size_t SIZE_X>
