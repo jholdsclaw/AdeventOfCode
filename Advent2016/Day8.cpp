@@ -24,6 +24,18 @@ namespace Day8 {
 		parseInput(&test2, testscreen);
 		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
 
+		// Test Case 3
+		std::string test3 = "rotate row y=0 by 4";
+		std::cout << "Test Case 3: " << test3 << std::endl;
+		parseInput(&test3, testscreen);
+		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
+
+		// Test Case 4
+		std::string test4 = "rotate column x=1 by 1";
+		std::cout << "Test Case 4: " << test4 << std::endl;
+		parseInput(&test4, testscreen);
+		std::cout << "Result:\n" << printScreen(testscreen) << std::endl;
+
 		return;
 	}
 
@@ -69,7 +81,7 @@ namespace Day8 {
 		char axis;
 		int index, offset;
 
-		// Find out of we're rotating on the X or Y (can ignore column/row since X/Y is also a unique identifier)
+		// Find out of we're rotating on the X or Y (can ignore column/row since x=/y= is also a unique identifier)
 		if (params->find("x=") != std::string::npos) {
 			axis = 'x';
 		}
